@@ -3,7 +3,7 @@
 #include "Node.h"
 
 double f(double x, double y) {
-	return 5 * x * x * y*y + 3 * x * y + 6;
+	return -2 * x * x * y + 2 * x * y + 4;
 }
 
 double gaussLegrende(double (*function)(double, double), Node node) {
@@ -22,7 +22,7 @@ double gaussLegrende(double (*function)(double, double), Node node) {
 
 int main() {
 	//2 or 3 nodes
-	Node Node(2);
+	Node Node(3);
 	std::cout << gaussLegrende(f, Node);
 	return 0;
 }
