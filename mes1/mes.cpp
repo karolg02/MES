@@ -3,6 +3,7 @@
 #include "Grid.h"
 #include "GlobalData.h"
 #include "LoadGlobalData.h"
+#include "Fixed.h"
 
 using namespace std;
 
@@ -10,14 +11,13 @@ int main()
 {
     GlobalData* globaldata = new GlobalData;
     Grid* grid = new Grid;
-
-    loadGlobalData(globaldata, grid);
     
-    globaldata->getGlobalData();
+    fixed(globaldata, grid);
+
+    //globaldata->getGlobalData();
 
     grid->getGrid();
 
-    
 
     return 0;
 }
