@@ -1,4 +1,5 @@
 #pragma once
+#include <iomanip>
 struct Node {
 	std::vector<double> weights;
 	std::vector<double> points;
@@ -32,30 +33,30 @@ struct Node {
 
     void calculateDerivatives() {
         double tabEta[4];
-        double tabPsi[4];
+        double tabKsi[4];
 
         double eta = (-1.0 / std::sqrt(3.0));
-        double psi = (1.0 / std::sqrt(3.0));
+        double ksi = (1.0 / std::sqrt(3.0));
 
         double N1eta = -1.0 / 4.0 * (1 - eta);
         double N2eta = 1.0 / 4.0 * (1 - eta);
         double N3eta = 1.0 / 4.0 * (1 + eta);
         double N4eta = -1.0 / 4.0 * (1 + eta);
 
-        double N1psi = -1.0 / 4.0 * (1 + psi);
-        double N2psi = -1.0 / 4.0 * (1 - psi);
-        double N3psi = 1.0 / 4.0 * (1 - psi);
-        double N4psi = 1.0 / 4.0 * (1 + psi);
+        double N1ksi = -1.0 / 4.0 * (1 + ksi);
+        double N2ksi = -1.0 / 4.0 * (1 - ksi);
+        double N3ksi = 1.0 / 4.0 * (1 - ksi);
+        double N4ksi = 1.0 / 4.0 * (1 + ksi);
 
         tabEta[0] = N1eta;
         tabEta[1] = N2eta;
         tabEta[2] = N3eta;
         tabEta[3] = N4eta;
 
-        tabPsi[0] = N1psi;
-        tabPsi[1] = N2psi;
-        tabPsi[2] = N3psi;
-        tabPsi[3] = N4psi;
+        tabKsi[0] = N1ksi;
+        tabKsi[1] = N2ksi;
+        tabKsi[2] = N3ksi;
+        tabKsi[3] = N4ksi;
 
         std::cout << "Pochodne:" << std::endl;
         std::cout << "N1eta = " << N1eta << std::endl;
@@ -63,10 +64,10 @@ struct Node {
         std::cout << "N3eta = " << N3eta << std::endl;
         std::cout << "N4eta = " << N4eta << std::endl << std::endl;
 
-        std::cout << "N1psi = " << N1psi << std::endl;
-        std::cout << "N2psi = " << N2psi << std::endl;
-        std::cout << "N3psi = " << N3psi << std::endl;
-        std::cout << "N4psi = " << N4psi << std::endl << std::endl;
+        std::cout << "N1ksi = " << N1ksi << std::endl;
+        std::cout << "N2ksi = " << N2ksi << std::endl;
+        std::cout << "N3ksi = " << N3ksi << std::endl;
+        std::cout << "N4ksi = " << N4ksi << std::endl << std::endl;
 
         double scoreX = 0.0;
         double scoreY = 0.0;
@@ -85,21 +86,32 @@ struct Node {
         }
 
         for (int i = 0; i < 4; i++) {
-            scoreY += tabPsi[i] * przykladyY[i];
+            scoreY += tabKsi[i] * przykladyY[i];
         }
 
         for (int i = 0; i < 4; i++) {
-            scoreYX += tabPsi[i] * przykladyX[i];
+            scoreYX += tabKsi[i] * przykladyX[i];
         }
 
-        std::cout << "x = " << scoreX << std::endl;
-        std::cout << "y = " << scoreY << std::endl;
-        std::cout << "YX = " << scoreYX << std::endl;
-        std::cout << "XY = " << scoreXY << std::endl;
-        std::cout << std::endl;
+        double macierzJakobiego[] = {
+            scoreX,scoreXY,
+            scoreYX, scoreY
+        };
+
+        std::cout << "Macierz Jakobiego" << std::endl;
+        for (int i = 0; i < 4; i++) {
+            std::cout << std::setw(3) << std::setprecision(3) << macierzJakobiego[i] << " ";
+            if (i == 1 || i == 3) {
+                std::cout << std::endl;
+            }
+        }
 
         double detJ = scoreX * scoreY - scoreXY * scoreYX;
         std::cout << "Wyznacznik macierzy Jakobiego to: " << detJ << std::endl;
+
+        //odwrotnosc
+        std::cout << (1 / detJ) * (scoreX * scoreY - (-1) * scoreXY * (-1) * scoreYX) << std::endl;
+
     }
 
 };
