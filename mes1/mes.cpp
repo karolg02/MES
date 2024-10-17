@@ -11,10 +11,10 @@ int main()
 {
     GlobalData* globaldata = new GlobalData;
     Grid* grid = new Grid;
+
+    loadGlobalData(globaldata, grid);
     
-    fixed(globaldata, grid);
-    //to load data from file
-    //globaldata->getGlobalData();
+    globaldata->getGlobalData();
 
     grid->getGrid();
 

@@ -22,7 +22,12 @@ double gaussLegrende(double (*function)(double, double), Node node) {
 
 int main() {
 	//2 or 3 nodes
-	Node Node(3);
-	std::cout << gaussLegrende(f, Node);
+	Node node(2);
+	//std::cout << gaussLegrende(f, node) << std::endl;
+
+	//1 = (-1.0 / std::sqrt(3.0))
+	//2 = (1.0 / std::sqrt(3.0))
+	node.calculateDerivatives();
+
 	return 0;
 }
