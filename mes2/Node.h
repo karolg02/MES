@@ -74,8 +74,10 @@ struct Node {
         double scoreXY = 0.0;
         double scoreYX = 0.0;
 
-        double przykladyX[4] = { 0, 4, 4, 0 };
-        double przykladyY[4] = { 0, 0, 4, 5 };
+        //double przykladyX[4] = { 0, 4, 4, 0 };
+        //double przykladyY[4] = { 0, 0, 4, 5 };
+        double przykladyX[4] = { 0,0.025,0.025,0 };
+        double przykladyY[4] = { 0,0,0.025,0.025 };
 
         for (int i = 0; i < 4; i++) {
             scoreX += tabEta[i] * przykladyX[i];
