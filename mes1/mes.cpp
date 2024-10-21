@@ -49,7 +49,7 @@ void lab3() {
     element.addExamplesY(0, 0, 0.025, 0.025);
     double ksi = (-1.0 / std::sqrt(3.0));
     double eta = (1.0 / std::sqrt(3.0));
-    node.calculateDerivatives(ksi,eta,&element);
+    node.calculateDerivatives(&element);
 }
 
 int main()
