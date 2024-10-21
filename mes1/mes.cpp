@@ -48,6 +48,12 @@ void lab3() {
     element.addExamplesX(0, 0.025, 0.025, 0);
     element.addExamplesY(0, 0, 0.025, 0.025);
     node.calculateDerivatives(&element);
+    element.addExamplesX(0, 4, 4, 0);
+    element.addExamplesY(0, 0, 4, 4);
+    node.calculateDerivatives(&element);
+    element.addExamplesX(0, 4, 4, 0);
+    element.addExamplesY(0, 0, 4, 5);
+    node.calculateDerivatives(&element);
 }
 
 int main()

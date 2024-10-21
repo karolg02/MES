@@ -40,18 +40,18 @@ struct Node {
 
     void calculateDerivatives(Element *element) {
 
-        //points[0] - ksi
-        //points[1] - eta
+        //points[0] - eta (-)
+        //points[1] - ksi (+)
 
-        element->Eta[0] = -1.0 / 4.0 * (1 - points[1]);
-        element->Eta[1] = 1.0 / 4.0 * (1 - points[1]);
-        element->Eta[2] = 1.0 / 4.0 * (1 + points[1]);
-        element->Eta[3] = -1.0 / 4.0 * (1 + points[1]);
+        element->Eta[0] = -1.0 / 4.0 * (1 - points[0]);
+        element->Eta[1] = 1.0 / 4.0 * (1 - points[0]);
+        element->Eta[2] = 1.0 / 4.0 * (1 + points[0]);
+        element->Eta[3] = -1.0 / 4.0 * (1 + points[0]);
 
-        element->Ksi[0] = -1.0 / 4.0 * (1 + points[0]);
-        element->Ksi[1] = -1.0 / 4.0 * (1 - points[0]);
-        element->Ksi[2] = 1.0 / 4.0 * (1 - points[0]);
-        element->Ksi[3] = 1.0 / 4.0 * (1 + points[0]);
+        element->Ksi[0] = -1.0 / 4.0 * (1 + points[1]);
+        element->Ksi[1] = -1.0 / 4.0 * (1 - points[1]);
+        element->Ksi[2] = 1.0 / 4.0 * (1 - points[1]);
+        element->Ksi[3] = 1.0 / 4.0 * (1 + points[1]);
 
         std::cout << "Pochodne:" << std::endl;
         std::cout << "N1eta = " << element->Eta[0] << std::endl;

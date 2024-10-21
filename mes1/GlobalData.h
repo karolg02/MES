@@ -13,8 +13,8 @@ struct GlobalData {
     int nH = 4;
     int nW = 4;
 
-    double nN = nW * nH;
-    double nE = (nH - 1) * (nW - 1);
+    int nN = nW * nH;
+    int nE = (nH - 1) * (nW - 1);
 
     void getGlobalData() {
         cout << "SimulationTime " << SimulationTime << endl;
