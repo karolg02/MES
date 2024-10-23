@@ -42,6 +42,7 @@ void lab2() {
     Node node(2);
     std::cout << gaussLegrende(f, node) << std::endl;
 }
+
 void lab3() {
     Node node(2);
     Element element;
@@ -55,6 +56,8 @@ void lab3() {
     element.addExamplesY(0, 0, 4, 5);
     node.calculateDerivatives(&element);
 }
+
+void lab4(){}
 
 int main()
 {
