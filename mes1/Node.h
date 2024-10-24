@@ -17,10 +17,11 @@ private:
 public:
 
     double macierzJakobiego[4];
-
+    int punktyCalkowania;
     Node(){}
 
     Node(int iloscWezlow) {
+        punktyCalkowania = iloscWezlow*iloscWezlow;
         if (iloscWezlow == 2) {
             addTwoNode();
         }
@@ -46,81 +47,71 @@ public:
         weights.push_back(8.0 / 9.0);
         weights.push_back(5.0 / 9.0);
     }
+    
+    void calculateDerivatives(Element* element) {
 
-    void calculateDerivatives(Element *element) {
+        double ksi[4] = { -0.57735, 0.57735, 0.57735, -0.57735 };
+        double eta[4] = { -0.57735, -0.57735, 0.57735, 0.57735 };
 
-        //points[0] - eta (-)
-        //points[1] - ksi (+)
+        for (int i = 0; i < punktyCalkowania; i++) {
+            // KSI
+            element->Ksi[i][0] = -0.25 * (1 - eta[i]); // dN1/dKsi
+            element->Ksi[i][1] = 0.25 * (1 - eta[i]);  // dN2/dKsi
+            element->Ksi[i][2] = 0.25 * (1 + eta[i]);  // dN3/dKsi
+            element->Ksi[i][3] = -0.25 * (1 + eta[i]); // dN4/dKsi
 
-        scoreX = 0.0;
-        scoreY = 0.0;
-        scoreXY = 0.0;
-        scoreYX = 0.0;
+            // ETA
+            element->Eta[i][0] = -0.25 * (1 - ksi[i]); // dN1/dEta
+            element->Eta[i][1] = -0.25 * (1 + ksi[i]); // dN2/dEta
+            element->Eta[i][2] = 0.25 * (1 + ksi[i]);  // dN3/dEta
+            element->Eta[i][3] = 0.25 * (1 - ksi[i]);  // dN4/dEta
 
-        element->Eta[0] = -1.0 / 4.0 * (1 - points[0]);
-        element->Eta[1] = 1.0 / 4.0 * (1 - points[0]);
-        element->Eta[2] = 1.0 / 4.0 * (1 + points[0]);
-        element->Eta[3] = -1.0 / 4.0 * (1 + points[0]);
+            // Wypisanie pochodnych
+            //std::cout << "Punkt Gaussa " << i + 1 << std::endl;
+            //for (int j = 0; j < 4; j++) {
+            //    std::cout << "dN" << j + 1 << "/dKsi = " << element->Ksi[i][j] << "  ";
+            //    std::cout << "dN" << j + 1 << "/dEta = " << element->Eta[i][j] << std::endl;
+            //}
+            //std::cout << std::endl;
 
-        element->Ksi[0] = -1.0 / 4.0 * (1 + points[1]);
-        element->Ksi[1] = -1.0 / 4.0 * (1 - points[1]);
-        element->Ksi[2] = 1.0 / 4.0 * (1 - points[1]);
-        element->Ksi[3] = 1.0 / 4.0 * (1 + points[1]);
-
-        //std::cout << "Pochodne:" << std::endl;
-        //std::cout << "N1eta = " << element->Eta[0] << std::endl;
-        //std::cout << "N2eta = " << element->Eta[1] << std::endl;
-        //std::cout << "N3eta = " << element->Eta[2] << std::endl;
-        //std::cout << "N4eta = " << element->Eta[3] << std::endl << std::endl;
-
-        //std::cout << "N1ksi = " << element->Ksi[0] << std::endl;
-        //std::cout << "N2ksi = " << element->Ksi[1] << std::endl;
-        //std::cout << "N3ksi = " << element->Ksi[2] << std::endl;
-        //std::cout << "N4ksi = " << element->Ksi[3] << std::endl << std::endl;
-
-        for (int i = 0; i < 4; i++) {
-            scoreX += element->Eta[i] * element->ExamplesX[i];
-            scoreXY += element->Eta[i] * element->ExamplesY[i];
-            scoreY += element->Ksi[i] * element->ExamplesY[i];
-            scoreYX += element->Ksi[i] * element->ExamplesX[i];
-        }
-
-        // Przypisywanie wartoœci do macierzy Jakobiego
-        macierzJakobiego[0] = scoreX;
-        macierzJakobiego[1] = scoreXY;
-        macierzJakobiego[2] = scoreYX;
-        macierzJakobiego[3] = scoreY;
-
-        std::cout << "Macierz Jakobiego" << std::endl;
-        for (int i = 0; i < 4; i++) {
-            std::cout << std::setw(3) << std::setprecision(3) << macierzJakobiego[i] << " ";
-            if (i == 1 || i == 3) {
-                std::cout << std::endl;
-            }
-        }
-
-        double detJ = scoreX * scoreY - scoreXY * scoreYX;
-        std::cout << "Wyznacznik macierzy Jakobiego to: " << detJ << std::endl << std::endl;
-
-        //odwrotnosc
-        std::cout << "Macierz odwrotna:" << std::endl;
-
-        double macierzOdwrotna[] = {
-            (1 / detJ) * scoreY,(-1 / detJ) * scoreXY,
-            (-1 / detJ) * scoreYX,(1 / detJ) * scoreX
-        };
-
-        //0 nieujemne
-        for (int i = 0; i < 4; i++) {
-            if (std::abs(macierzOdwrotna[i]) < 1e-10) {
-                macierzOdwrotna[i] = 0;
+            // Obliczanie macierzy Jakobiego
+            scoreX = 0.0; scoreXY = 0.0;
+            scoreY = 0.0; scoreYX = 0.0;
+            for (int j = 0; j < 4; j++) {
+                scoreX += element->Ksi[i][j] * element->ExamplesX[j];  // dX/dKsi
+                scoreXY += element->Ksi[i][j] * element->ExamplesY[j]; // dX/dEta
+                scoreY += element->Eta[i][j] * element->ExamplesY[j];  // dY/dKsi
+                scoreYX += element->Eta[i][j] * element->ExamplesX[j];  // dY/dEta
             }
 
-            std::cout << std::setw(3) << std::setprecision(3) << macierzOdwrotna[i] << " ";
-            if (i == 1 || i == 3) {
-                std::cout << std::endl;
-            }
-        }
+            macierzJakobiego[0] = scoreX;
+            macierzJakobiego[1] = scoreXY;
+            macierzJakobiego[2] = scoreYX;
+            macierzJakobiego[3] = scoreY;
 
+            std::cout << "Macierz Jakobiego (punkt Gaussa " << i + 1 << "):" << std::endl;
+            for (int k = 0; k < 4; k++) {
+                std::cout << std::setw(12) << std::fixed << std::setprecision(6) << macierzJakobiego[k];
+                if (k == 1 || k == 3) std::cout << std::endl;
+            }
+
+            double detJ = scoreX * scoreY - scoreXY * scoreYX;
+            std::cout << "Wyznacznik macierzy Jakobiego: " << detJ << std::endl;
+
+            double macierzOdwrotna[] = {
+                (1 / detJ) * scoreY, (-1 / detJ) * scoreXY,
+                (-1 / detJ) * scoreYX, (1 / detJ) * scoreX
+            };
+
+            std::cout << "Macierz odwrotna Jakobiego (punkt Gaussa " << i + 1 << "):" << std::endl;
+            for (int l = 0; l < 4; l++) {
+                if (std::abs(macierzOdwrotna[l]) < 1e-10) macierzOdwrotna[l] = 0.0; // Zerowanie ma³ych wartoœci
+                std::cout << std::setw(12) << std::fixed << std::setprecision(6) << macierzOdwrotna[l];
+                if (l == 1 || l == 3) std::cout << std::endl;
+            }
+            std::cout << endl;
+        }
     }
+
+    
 };

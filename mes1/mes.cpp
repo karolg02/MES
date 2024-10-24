@@ -46,14 +46,17 @@ void lab2() {
 void lab3() {
     Node node(2);
     Element element;
-    element.addExamplesX(0, 0.025, 0.025, 0);
-    element.addExamplesY(0, 0, 0.025, 0.025);
-    node.calculateDerivatives(&element);
-    element.addExamplesX(0, 4, 4, 0);
-    element.addExamplesY(0, 0, 4, 4);
-    node.calculateDerivatives(&element);
-    element.addExamplesX(0, 4, 4, 0);
-    element.addExamplesY(0, 0, 4, 5);
+    //element.addExamplesX(0, 0.025, 0.025, 0);
+    //element.addExamplesY(0, 0, 0.025, 0.025);
+    //node.calculateDerivatives(&element);
+    //element.addExamplesX(0, 4, 4, 0);
+    //element.addExamplesY(0, 0, 4, 4);
+    //node.calculateDerivatives(&element);
+    //element.addExamplesX(0, 4, 4, 0);
+    //element.addExamplesY(0, 0, 4, 5);
+    //node.calculateDerivatives(&element);
+    element.addExamplesX(0.01, 0.025, 0.025, 0);
+    element.addExamplesY(-0.01, 0, 0.025, 0.025);
     node.calculateDerivatives(&element);
 }
 

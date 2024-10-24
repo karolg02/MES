@@ -3,11 +3,12 @@
 struct Element {
     int ID[4];
 
-    double Ksi[4];
-    double Eta[4];
+    double Ksi[4][4];
+    double Eta[4][4];
     double ExamplesX[4];
     double ExamplesY[4];
 
+    //PUNKTY LOKALNE
     void addExamplesX(double x1, double x2, double x3, double x4) {
         ExamplesX[0] = x1;
         ExamplesX[1] = x2;
